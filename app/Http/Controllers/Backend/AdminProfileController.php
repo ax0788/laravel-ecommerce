@@ -32,13 +32,13 @@ class AdminProfileController extends Controller
             $file->move(public_path('upload/admin_images'), $filename);
             $data['profile_photo_path'] = $filename;
         };
+        $data->save();
 
         $notification = array(
             'message' => 'Admin Profile Updated Successfully!',
             'alert-type' => 'success'
         );
 
-        $data->save();
         return  redirect()->route('admin.profile')->with($notification);
     }
 
@@ -53,19 +53,16 @@ class AdminProfileController extends Controller
             'current_password' => 'required',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required',
-          ]);
-          $admin = Admin::find(1);
+        ]);
+        $admin = Admin::find(1);
 
-          if (Hash::check($request->current_password, $admin->password)) {
+        if (Hash::check($request->current_password, $admin->password)) {
             $admin->password = Hash::make($request->password);
             $admin->save();
             Auth::logout();
             return redirect()->route(('admin.login'));
-        }else{
+        } else {
             return redirect()->back();
         }
-
-
-
     }
 }
