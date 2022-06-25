@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\AdminProfileController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Frontend\IndexController;
 use Illuminate\Support\Facades\Auth;
@@ -98,9 +99,35 @@ Route::prefix('category')->group(function () {
     Route::get('/sub/sub/view', [SubCategoryController::class, 'SubSubCategoryView'])->name('all.subsubcategory');
 
     Route::get('/subcategory/ajax/{category_id}', [SubCategoryController::class, 'GetSubCategory']);
+    // Product_add ajax fetch subcategory using subcategory id, then show subsubcategory depending on selected dropdown subcategory
+    Route::get('/sub-subcategory/ajax/{subcategory_id}', [SubCategoryController::class, 'GetSubSubCategory']);
+
     Route::post('sub/sub/store', [SubCategoryController::class, 'SubSubCategoryStore'])->name('subsubcategory.store');
     Route::get('sub/sub/edit/{id}', [SubCategoryController::class, 'SubSubCategoryEdit'])->name('subsubcategory.edit');
     Route::post('sub/sub/update', [SubCategoryController::class, 'SubSubCategoryUpdate'])->name('subsubcategory.update');
     Route::get('sub/sub/delete/{id}', [SubCategoryController::class, 'SubSubCategoryDelete'])->name('subsubcategory.delete');
+});
 
+// Admin Products All Routes
+
+Route::prefix('product')->group(function () {
+    // Product CRUD
+    Route::get('/add', [ProductController::class, 'AddProduct'])->name('add-product');
+    Route::post('/store', [ProductController::class, 'StoreProduct'])->name('store-product');
+    Route::get('/manage', [ProductController::class, 'ManageProduct'])->name('manage-product');
+    Route::get('/edit/{id}', [ProductController::class, 'EditProduct'])->name('product.edit');
+    Route::post('/update', [ProductController::class, 'UpdateProduct'])->name('update-product');
+
+    // Delete Product
+    Route::get('/delete/{id}', [ProductController::class, 'DeleteProduct'])->name('delete-product');
+
+
+    // Product images Routes
+    Route::post('/image/update', [ProductController::class, 'UpdateProductImage'])->name('update-product-image');
+    Route::post('/thumbnail/update', [ProductController::class, 'UpdateProductThumbnail'])->name('update-product-thumbnail');
+    Route::get('/mutliimage/delete/{id}', [ProductController::class, 'DeleteProductMultiImage'])->name('delete-product-multiImage');
+    // Product Status
+    Route::get('/inactive/{id}', [ProductController::class, 'InactiveProduct'])->name('inactive.product');
+
+    Route::get('/active/{id}', [ProductController::class, 'ActiveProduct'])->name('active.product');
 });

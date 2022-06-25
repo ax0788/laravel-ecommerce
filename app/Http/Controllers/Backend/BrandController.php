@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;
-use Illuminate\Support\Facades\File as File;
 
 class BrandController extends Controller
 {
@@ -31,9 +30,8 @@ class BrandController extends Controller
             ]
         );
         $path = public_path("upload/brand/");
-        if (!File::isDirectory($path)) {
-
-            mkdir($path);
+        if (!file_exists($path)) {
+            mkdir($path, 0777);
         }
 
 
@@ -110,9 +108,10 @@ class BrandController extends Controller
         }
     }
 
-    public function BrandDelete($id) {
-        $brand= Brand::findOrFail($id);
-        $img = $brand -> brand_image;
+    public function BrandDelete($id)
+    {
+        $brand = Brand::findOrFail($id);
+        $img = $brand->brand_image;
         unlink($img);
         Brand::findOrFail($id)->delete();
 
@@ -123,6 +122,4 @@ class BrandController extends Controller
 
         return  redirect()->back()->with($notification);
     }
-
-
-    }
+}

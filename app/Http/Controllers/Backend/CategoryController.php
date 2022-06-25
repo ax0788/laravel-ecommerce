@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\File as File;
 
 class CategoryController extends Controller
 {
@@ -48,37 +46,38 @@ class CategoryController extends Controller
         return  redirect()->back()->with($notification);
     }
 
-    public function CategoryEdit($id){
+    public function CategoryEdit($id)
+    {
         $category = Category::findOrFail($id);
         return view('Backend.category.category_edit', compact('category'));
     }
 
-    public function categoryUpdate(Request $request)
+    public function CategoryUpdate(Request $request)
     {
         $category_id = $request->id;
-            category::findOrFail($category_id)->update([
-                'category_name_en' => $request->category_name_en,
-                'category_name_cn' => $request->category_name_cn,
-                'category_slug_en' => strtolower(str_replace(' ', '-', $request->category_name_en)),
-                'category_slug_cn' => str_replace(' ', '-', $request->category_name_cn),
-                'category_icon' => $request->category_icon,
-            ]);
-            $notification = array(
-                'message' => 'Category Updated Successfully!',
-                'alert-type' => 'info'
-            );
-            return  redirect()->route('all.category')->with($notification);
-        }
-
-
-        public function CategoryDelete($id) {
-            $category= category::findOrFail($id);
-            category::findOrFail($id)->delete();
-            $notification = array(
-                'message' => 'category Deleted Successfully!',
-                'alert-type' => 'info'
-            );
-
-            return  redirect()->back()->with($notification);
-        }
+        Category::findOrFail($category_id)->update([
+            'category_name_en' => $request->category_name_en,
+            'category_name_cn' => $request->category_name_cn,
+            'category_slug_en' => strtolower(str_replace(' ', '-', $request->category_name_en)),
+            'category_slug_cn' => str_replace(' ', '-', $request->category_name_cn),
+            'category_icon' => $request->category_icon,
+        ]);
+        $notification = array(
+            'message' => 'Category Updated Successfully!',
+            'alert-type' => 'info'
+        );
+        return  redirect()->route('all.category')->with($notification);
     }
+
+
+    public function CategoryDelete($id)
+    {
+        Category::findOrFail($id)->delete();
+        $notification = array(
+            'message' => 'category Deleted Successfully!',
+            'alert-type' => 'info'
+        );
+
+        return  redirect()->back()->with($notification);
+    }
+}

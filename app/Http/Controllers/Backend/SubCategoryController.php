@@ -96,12 +96,23 @@ class SubCategoryController extends Controller
         $subsubcategory = SubSubCategory::latest()->get();
         return view('Backend.category.sub_subcategory_view', compact('subsubcategory', 'categories'));
     }
+
     // Route to get SubCategory data and pass it to the option field in sub_subcategory_view page.
     public function GetSubCategory($category_id)
     {
         $subcategoryitem = SubCategory::where('category_id', $category_id)->orderBy('subcategory_name_en', 'ASC')->get();
         return json_encode($subcategoryitem);
     }
+
+
+    public function GetSubSubCategory($subcategory_id)
+    {
+
+        $subcategoryitem = SubSubCategory::where('subcategory_id', $subcategory_id)->orderBy('subsubcategory_name_en', 'ASC')->get();
+        return json_encode($subcategoryitem);
+    }
+
+
     public function SubSubCategoryStore(Request $request)
     {
         $request->validate(

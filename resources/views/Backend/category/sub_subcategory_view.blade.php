@@ -115,7 +115,7 @@
 
 
          <div class="text-xs-right">
-          <input type="submit" class="btn btn-rounded btn-info" value="Add Subcategory">
+          <input type="submit" class="btn btn-rounded btn-info" value="Add Sub-Subcategory">
          </div>
         </form>
        </div>
