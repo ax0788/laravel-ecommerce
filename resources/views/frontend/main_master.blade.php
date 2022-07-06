@@ -6,6 +6,7 @@
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
  <meta name="description" content="">
+ <meta name="csrf-token" content="{{ csrf_token() }}">
  <meta name="author" content="">
  <meta name="keywords" content="MediaCenter, Template, eCommerce">
  <meta name="robots" content="all">
@@ -91,6 +92,142 @@
    }
   @endif
  </script>
+
+ <!-- ADD to Cart Product Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h4 class="modal-title" id="exampleModalLabel"><strong><span id="pname"></span></strong></h4>
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+     </button>
+    </div>
+    <div class="modal-body">
+     <div class="row">
+
+      <div class="col-md-4">
+       <div class="card" style="width: 18rem;">
+        <img src="" class="card-img-top" alt="..." style="height:200px; width:200px; " id="image">
+       </div>
+      </div> {{-- End col-md-4 --}}
+
+      <div class="col-md-4">
+       <ul class="list-group">
+        <li class="list-group-item">Price: <strong class="text-success mr-2">$<span id="pprice"></span></strong>
+         <del class="text-danger" id="oldprice">$</del>
+        </li>
+        <li class="list-group-item">Code: <strong id="code"></strong></li>
+        <li class="list-group-item">Category: <strong id="category"></strong> </li>
+        <li class="list-group-item">Brand: <strong id="brand"></strong></li>
+        <li class="list-group-item">Stock:
+         <strong class="text-success " id="available" style="background-color: green; color:white;"></strong>
+         <strong class="text-danger " id="stockout" style="background-color: red; color:white;"></strong>
+        </li>
+       </ul>
+      </div>{{-- End col-md-4 --}}
+
+      <div class="col-md-4">
+       <div class="form-group">
+        <label for="exampleFormControlSelect1">Choose Color</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="color">
+        </select>
+       </div> {{-- End form-group --}}
+       <div class="form-group" id="sizeArea">
+        <label for="exampleFormControlSelect1">Choose Size</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="size">
+        </select>
+       </div> {{-- End form-group --}}
+
+       <div class="form-group">
+        <label for="exampleFormControlInput1">Quantity</label>
+        <input type="number" class="form-control" id="exampleFormControlInput1" value="1" min="1">
+       </div> {{-- End form-group --}}
+       <button type="submit" class="btn btn-primary mb-2">Add to Cart</button>
+      </div>{{-- End col-md-4 --}}
+
+     </div> {{-- End Row --}}
+    </div>
+   </div>
+  </div>
+ </div>
+ <!--END  Add to Cart Product Modal -->
+
+ <script>
+  $.ajaxSetup({
+   headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+   }
+  })
+
+  //   Start Product View with Modal
+  function productView(id) {
+   //    alert(id)
+
+   $.ajax({
+    type: 'GET',
+    url: '/product/view/modal/' + id,
+    dataType: 'json',
+    success: function(data) {
+     $('#pname').text(data.product.product_name_en);
+     $('#price').text(data.product.selling_price);
+     $('#code').text(data.product.product_code);
+     $('#category').text(data.product.category.category_name_en);
+     $('#brand').text(data.product.brand.brand_name_en);
+     $('#image').attr('src', '/' + data.product.product_thumbnail);
+
+     //  Product Price
+     if (data.product.discount_price == null) {
+      $('#pprice').text('');
+      $('#oldprice').text('');
+      $('#pprice').text(data.product.selling_price);
+     } else {
+      $('#pprice').text(data.product.discount_price);
+      $('#oldprice').text(data.product.selling_price);
+     } //End Product Price
+
+     //  Stock Option
+     if (data.product.product_qty > 0) {
+      $('#available').text('');
+      $('#stockout').text('');
+      $('#available').text('available');
+     } else {
+      $('#available').text('');
+      $('#stockout').text('');
+      $('#stockout').text('stockout');
+     } //End Stock Option
+
+
+
+     //  Color
+     $('select[name="color"]').empty();
+     $.each(data.color, function(key, value) {
+      $('select[name = "color"]').append('<option value=" ' + value + ' "> ' + value + ' </option>')
+     })
+     //  Size
+     $('select[name="size"]').empty();
+     $.each(data.size, function(key, value) {
+      $('select[name = "size"]').append('<option value=" ' + value + ' "> ' + value + ' </option>');
+
+      if (data.size == "") {
+       $('#sizeArea').hide();
+      } else {
+       $('#sizeArea').show();
+
+      }
+     })
+
+
+    }
+   })
+  }
+ </script>
+
+
+
+
+
+
 
 </body>
 

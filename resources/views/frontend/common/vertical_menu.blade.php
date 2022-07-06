@@ -26,14 +26,15 @@ $categories = App\Models\Category::orderBy('category_name_en', 'ASC')->get();
         @endphp
         @foreach ($subcategories as $subcategory)
          <div class="col-sm-12 col-md-3">
-
-          <h2 class="title mt-5">
-           @if (session()->get('language') == 'chinese')
-            {{ $subcategory->subcategory_name_cn }}
-           @else
-            {{ $subcategory->subcategory_name_en }}
-           @endif
-          </h2>
+          <a href="{{ url('subcategory/' . $subcategory->id . '/' . $subcategory->subcategory_slug_en) }}">
+           <h2 class="title mt-5">
+            @if (session()->get('language') == 'chinese')
+             {{ $subcategory->subcategory_name_cn }}
+            @else
+             {{ $subcategory->subcategory_name_en }}
+            @endif
+           </h2>
+          </a>
           {{-- GET Sub->SubCategory Table Data --}}
           @php
            $subsubcategories = App\Models\SubSubCategory::where('subcategory_id', $subcategory->id)
@@ -43,7 +44,8 @@ $categories = App\Models\Category::orderBy('category_name_en', 'ASC')->get();
 
           @foreach ($subsubcategories as $subsubcategory)
            <ul class="links list-unstyled">
-            <li><a href="#">
+            <li><a
+              href="{{ url('subsubcategory/' . $subsubcategory->id . '/' . $subsubcategory->subsubcategory_slug_en) }}">
               @if (session()->get('language') == 'chinese')
                {{ $subsubcategory->subsubcategory_name_cn }}
               @else

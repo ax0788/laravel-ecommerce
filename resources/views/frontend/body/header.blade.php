@@ -213,64 +213,68 @@
               @endphp
 
               @foreach ($subcategories as $subcategory)
-               <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
-                <h2 class="title mt-5">
-                 @if (session()->get('language') == 'chinese')
-                  {{ $subcategory->subcategory_name_cn }}
-                 @else
-                  {{ $subcategory->subcategory_name_en }}
-                 @endif
-                </h2>
-                {{-- GET Sub->SubCategory Table Data --}}
-                @php
-                 $subsubcategories = App\Models\SubSubCategory::where('subcategory_id', $subcategory->id)
-                     ->orderBy('subsubcategory_name_en', 'ASC')
-                     ->get();
-                @endphp
-                @foreach ($subsubcategories as $subsubcategory)
-                 <ul class="links">
-                  <li class="mb-3"><a href="#">
+               <a href="{{ url('subcategory/' . $subcategory->id . '/' . $subcategory->subcategory_slug_en) }}">
 
-                    @if (session()->get('language') == 'chinese')
-                     {{ $subsubcategory->subsubcategory_name_cn }}
-                    @else
-                     {{ $subsubcategory->subsubcategory_name_en }}
-                    @endif
+                <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
+                 <h2 class="title mt-5">
+                  @if (session()->get('language') == 'chinese')
+                   {{ $subcategory->subcategory_name_cn }}
+                  @else
+                   {{ $subcategory->subcategory_name_en }}
+                  @endif
+                 </h2>
+               </a>
+               {{-- GET Sub->SubCategory Table Data --}}
+               @php
+                $subsubcategories = App\Models\SubSubCategory::where('subcategory_id', $subcategory->id)
+                    ->orderBy('subsubcategory_name_en', 'ASC')
+                    ->get();
+               @endphp
+               @foreach ($subsubcategories as $subsubcategory)
+                <ul class="links">
+                 <li class="mb-3"><a
+                   href="{{ url('subsubcategory/' . $subsubcategory->id . '/' . $subsubcategory->subsubcategory_slug_en) }}">
+
+                   @if (session()->get('language') == 'chinese')
+                    {{ $subsubcategory->subsubcategory_name_cn }}
+                   @else
+                    {{ $subsubcategory->subsubcategory_name_en }}
+                   @endif
 
 
-                   </a></li>
-                 </ul>
-                @endforeach {{-- End SUBSubCategory foreach --}}
-               </div>
-               <!-- /.col -->
-              @endforeach {{-- End SubCategory foreach --}}
-
-              <div class="col-xs-12 col-sm-6 col-md-4 col-menu banner-image">
-               <img class="img-responsive" src="{{ asset('frontend/assets/images/banners/top-menu-banner.jpg') }}"
-                alt="">
-              </div>
-              <!-- /.yamm-content -->
+                  </a></li>
+                </ul>
+               @endforeach {{-- End SUBSubCategory foreach --}}
              </div>
-            </div>
-           </li>
-          </ul>
-         </li>
-        @endforeach {{-- End Category foreach --}}
-        <li class="dropdown  navbar-right special-menu"> <a href="#">Todays offer</a> </li>
-       </ul>
-       <!-- /.navbar-nav -->
-       <div class="clearfix"></div>
-      </div>
-      <!-- /.nav-outer -->
-     </div>
-     <!-- /.navbar-collapse -->
+             <!-- /.col -->
+        @endforeach {{-- End SubCategory foreach --}}
 
+        <div class="col-xs-12 col-sm-6 col-md-4 col-menu banner-image">
+         <img class="img-responsive" src="{{ asset('frontend/assets/images/banners/top-menu-banner.jpg') }}"
+          alt="">
+        </div>
+        <!-- /.yamm-content -->
+      </div>
+     </div>
+     </li>
+     </ul>
+     </li>
+     @endforeach {{-- End Category foreach --}}
+     <li class="dropdown  navbar-right special-menu"> <a href="#">Todays offer</a> </li>
+     </ul>
+     <!-- /.navbar-nav -->
+     <div class="clearfix"></div>
     </div>
-    <!-- /.nav-bg-class -->
+    <!-- /.nav-outer -->
    </div>
-   <!-- /.navbar-default -->
+   <!-- /.navbar-collapse -->
+
   </div>
-  <!-- /.container-class -->
+  <!-- /.nav-bg-class -->
+ </div>
+ <!-- /.navbar-default -->
+ </div>
+ <!-- /.container-class -->
 
  </div>
  <!-- /.header-nav -->

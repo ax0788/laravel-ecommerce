@@ -147,8 +147,7 @@
             <div class="form-group">
              <h5>Product Quantity <span class="text-danger">*</span></h5>
              <div class="controls">
-              <input type="text" name="product_qty" class="form-control" required
-               value="{{ $products->product_qty }}">
+              <input type="text" name="product_qty" class="form-control" value="{{ $products->product_qty }}">
               @error('product_qty')
                <span class="text-danger">{{ $message }}</span>
               @enderror
@@ -193,7 +192,7 @@
              <h5>Product Size En <span class="text-danger">*</span></h5>
              <div class="controls">
               <input type="text" name="product_size_en" class="form-control" data-role="tagsinput"
-               placeholder="add tags" required value="{{ $products->product_size_en }}">
+               placeholder="add tags" value="{{ $products->product_size_en }}">
               @error('product_size_en')
                <span class="text-danger">{{ $message }}</span>
               @enderror
@@ -210,7 +209,7 @@
              <h5>Product Size Cn <span class="text-danger">*</span></h5>
              <div class="controls">
               <input type="text" name="product_size_cn" class="form-control" data-role="tagsinput"
-               placeholder="add tags" required value="{{ $products->product_size_cn }}">
+               placeholder="add tags" value="{{ $products->product_size_cn }}">
               @error('product_size_cn')
                <span class="text-danger">{{ $message }}</span>
               @enderror
@@ -267,7 +266,7 @@
             <div class="form-group">
              <h5>Product Discount Price <span class="text-danger">*</span></h5>
              <div class="controls">
-              <input type="text" name="discount_price" class="form-control" required
+              <input type="text" name="discount_price" class="form-control"
                value="{{ $products->discount_price }}">
               @error('discount_price')
                <span class="text-danger">{{ $message }}</span>

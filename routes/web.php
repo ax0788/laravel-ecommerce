@@ -198,3 +198,9 @@ Route::get('/language/chinese', [LanguageController::class, 'Chinese'])->name('c
 Route::get('/product/details/{id}/{slug}', [IndexController::class, 'ProductDetails']);
 // Product Tags
 Route::get('/product/tag/{tag}', [IndexController::class, 'ProductTag']);
+// Frontend SubCategory wise data
+Route::get('/subcategory/{subcat_id}/{slug}', [IndexController::class, 'ProductbySubCat']);
+// Frontend Sub SubCategory wise data
+Route::get('/subsubcategory/{subsubcat_id}/{slug}', [IndexController::class, 'ProductbySubSubCat']);
+// Product View Modal with AJAX
+Route::get('/product/view/modal/{id}', [IndexController::class, 'ProductViewAjax']);
