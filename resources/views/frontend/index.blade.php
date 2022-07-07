@@ -454,9 +454,10 @@
                <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
 
               </li>
+              {{-- Wishlist --}}
+              <button class="btn btn-primary icon" type="button" title="Wishlist" id="{{ $product->id }}"
+               onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
 
-              <li class="lnk wishlist"> <a data-toggle="tooltip" class="add-to-cart" href="detail.html"
-                title="Wishlist"> <i class="icon fa fa-heart"></i> </a> </li>
               <li class="lnk"> <a data-toggle="tooltip" class="add-to-cart" href="detail.html" title="Compare">
                 <i class="fa fa-signal" aria-hidden="true"></i> </a> </li>
              </ul>
