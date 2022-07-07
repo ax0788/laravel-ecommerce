@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\LanguageController;
+use App\Http\Controllers\Frontend\CartController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
@@ -194,13 +195,27 @@ Route::prefix('slider')->group(function () {
 
 Route::get('/language/english', [LanguageController::class, 'English'])->name('english.language');
 Route::get('/language/chinese', [LanguageController::class, 'Chinese'])->name('chinese.language');
+
 // Product details Page
 Route::get('/product/details/{id}/{slug}', [IndexController::class, 'ProductDetails']);
+
 // Product Tags
 Route::get('/product/tag/{tag}', [IndexController::class, 'ProductTag']);
+
 // Frontend SubCategory wise data
 Route::get('/subcategory/{subcat_id}/{slug}', [IndexController::class, 'ProductbySubCat']);
+
 // Frontend Sub SubCategory wise data
 Route::get('/subsubcategory/{subsubcat_id}/{slug}', [IndexController::class, 'ProductbySubSubCat']);
+
 // Product View Modal with AJAX
 Route::get('/product/view/modal/{id}', [IndexController::class, 'ProductViewAjax']);
+
+// Product Add to Cart Store DATA
+Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
+
+// GET data from mini cart
+Route::get('/product/mini/cart/', [CartController::class, 'AddMiniCart']);
+
+//Remove Item from mini cart
+Route::get('/product/minicart/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);

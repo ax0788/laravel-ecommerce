@@ -67,7 +67,7 @@
  <script src="{{ asset('frontend/assets/js/bootstrap-select.min.js') }}"></script>
  <script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>
  <script src="{{ asset('frontend/assets/js/scripts.js') }}"></script>
-
+ <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
  <script>
@@ -99,7 +99,7 @@
    <div class="modal-content">
     <div class="modal-header">
      <h4 class="modal-title" id="exampleModalLabel"><strong><span id="pname"></span></strong></h4>
-     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
       <span aria-hidden="true">&times;</span>
      </button>
     </div>
@@ -129,21 +129,22 @@
 
       <div class="col-md-4">
        <div class="form-group">
-        <label for="exampleFormControlSelect1">Choose Color</label>
-        <select class="form-control" id="exampleFormControlSelect1" name="color">
+        <label for="color">Choose Color</label>
+        <select class="form-control" id="color" name="color">
         </select>
        </div> {{-- End form-group --}}
        <div class="form-group" id="sizeArea">
-        <label for="exampleFormControlSelect1">Choose Size</label>
-        <select class="form-control" id="exampleFormControlSelect1" name="size">
+        <label for="size">Choose Size</label>
+        <select class="form-control" id="size" name="size">
         </select>
        </div> {{-- End form-group --}}
 
        <div class="form-group">
-        <label for="exampleFormControlInput1">Quantity</label>
-        <input type="number" class="form-control" id="exampleFormControlInput1" value="1" min="1">
+        <label for="qty">Quantity</label>
+        <input type="number" class="form-control" id="qty" value="1" min="1">
        </div> {{-- End form-group --}}
-       <button type="submit" class="btn btn-primary mb-2">Add to Cart</button>
+       <input type="hidden" id="product_id">
+       <button type="submit" class="btn btn-primary mb-2" onclick="addToCart()">Add to Cart</button>
       </div>{{-- End col-md-4 --}}
 
      </div> {{-- End Row --}}
@@ -175,6 +176,9 @@
      $('#category').text(data.product.category.category_name_en);
      $('#brand').text(data.product.brand.brand_name_en);
      $('#image').attr('src', '/' + data.product.product_thumbnail);
+
+     $('#product_id').val(id);
+     $('#qty').val(1);
 
      //  Product Price
      if (data.product.discount_price == null) {
@@ -216,19 +220,129 @@
 
       }
      })
+    }
+   })
+  }
+  //End Product Modal View
 
+  //Add to Product to Cart
 
+  function addToCart() {
+   const product_name = $('#pname').text();
+   const id = $('#product_id').val();
+   const color = $('#color option:selected').text();
+   const size = $('#size option:selected').text();
+   const quantity = $('#qty').val();
+   $.ajax({
+    type: "POST",
+    dataType: 'json',
+    data: {
+     color: color,
+     size: size,
+     quantity: quantity,
+     product_name: product_name
+    },
+    url: "/cart/data/store/" + id,
+    success: function(data) {
+     miniCart();
+     $('#closeModal').click();
+
+     // Start Message
+     const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 3000,
+     })
+     if ($.isEmptyObject(data.error)) {
+      Toast.fire({
+       type: 'success',
+       title: data.success,
+      })
+     } else {
+      Toast.fire({
+       type: 'error',
+       title: data.error,
+      })
+
+     }
+     //End Message
     }
    })
   }
  </script>
+ {{-- MINI CART --}}
+ <script>
+  function miniCart() {
+   $.ajax({
+    type: "GET",
+    dataType: 'json',
+    url: "/product/mini/cart/",
+    success: function(response) {
+     let miniCart = "";
+     $.each(response.cartData, function(key, value) {
+      $('span[id="cartSubTotal"]').text(response.cartTotal);
+      $('#cartQty').text(response.cartQty);
 
+      miniCart +=
+       ` <div class="cart-item product-summary">
+         <div class="row">
+          <div class="col-xs-4">
+           <div class="image"> <a href="detail.html"><img src="/${value.options.image}"
+              alt=""></a> </div>
+          </div>
+          <div class="col-xs-7">
+           <h3 class="name"><a href="index.php?page-detail">${value.name}</a></h3>
+           <div class="price">${value.price} * ${value.qty}</div>
+          </div>
+          <div class="col-xs-1 action"> <button type="submit" id="${value.rowId}" onclick="miniCartRemove(this.id)" class="text-danger"><i class="fa fa-trash"></i></button>
+          </div>
+         </div>
+        </div>
+        <!-- /.cart-item -->
+        <div class="clearfix"></div>
+        <hr>
+        `
+     });
+     $('#miniCart').html(miniCart);
+    }
+   })
 
-
-
-
-
-
+  }
+  miniCart();
+  //Start  MiniCart Remove
+  function miniCartRemove(rowId) {
+   $.ajax({
+    type: 'GET',
+    url: '/product/minicart/remove/' + rowId,
+    dataType: 'json',
+    success: function(data) {
+     miniCart();
+     // Start Message
+     const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 3000
+     })
+     if ($.isEmptyObject(data.error)) {
+      Toast.fire({
+       type: 'success',
+       title: data.success
+      })
+     } else {
+      Toast.fire({
+       type: 'error',
+       title: data.error
+      })
+     }
+     // End Message
+    }
+   });
+  }
+ </script>
 </body>
 
 </html>
