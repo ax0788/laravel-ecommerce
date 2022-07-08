@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\User\WishlistController;
+use App\Http\Controllers\User\CartPageController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Routing\RouteGroup;
@@ -217,7 +218,7 @@ Route::get('/product/view/modal/{id}', [IndexController::class, 'ProductViewAjax
 Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
 
 // GET data from mini cart
-Route::get('/product/mini/cart/', [CartController::class, 'AddMiniCart']);
+Route::get('/product/mini/cart', [CartController::class, 'AddMiniCart']);
 
 //Remove Item from mini cart
 Route::get('/product/minicart/remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
@@ -235,7 +236,18 @@ Route::group(
         Route::get('/wishlist', [WishlistController::class, 'ViewWishlist'])->name('wishlist');
         // Wishlist Page Load Data AJAX
         Route::get('/get-wishlist-product', [WishlistController::class, 'GetWishlistProduct']);
-        // Wishlist Remove AJAX
+        // Wishlist Remove Product AJAX
         Route::get('/wishlist-remove/{id}', [WishlistController::class, 'RemoveWishlistProduct']);
     }
 );
+
+//   Cart Page
+Route::get('/mycart', [CartPageController::class, 'MyCart'])->name('mycart');
+//  GET Cart Products
+Route::get('/get-cart-product', [CartPageController::class, 'GetCartProduct']);
+// Remove  Cart Products
+Route::get('/cart-remove/{rowId}', [CartPageController::class, 'RemoveCartProduct']);
+// Increment Cart Item
+Route::get('/cart-increment/{rowId}', [CartPageController::class, 'CartIncrement']);
+// Decrement Cart Item
+Route::get('/cart-decrement/{rowId}', [CartPageController::class, 'CartDecrement']);
