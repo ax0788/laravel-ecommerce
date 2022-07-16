@@ -299,3 +299,11 @@ Route::prefix('shipping')->group(function () {
 
     Route::get('/state/delete/{id}', [ShippingAreaController::class, 'StateDelete'])->name('state.delete');
 });
+
+
+/////Frontend Apply & Remove Coupon
+
+Route::post('/coupon-apply', [CartController::class, 'CouponApply']);
+Route::get('/coupon-cal', [CartController::class, 'CouponCal']);
+
+Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
