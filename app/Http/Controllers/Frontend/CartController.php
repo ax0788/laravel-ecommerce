@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\Product;
+use App\Models\ShipDivison;
 use App\Models\Wishlist;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -129,5 +130,31 @@ class CartController extends Controller
     {
         Session::forget('coupon');
         return response()->json(['success' => 'Coupon Removed Successfully!']);
+    }
+
+    //Checkout
+    public function CheckoutCreate()
+    {
+        if (Auth::check()) {
+            if (Cart::total() > 0) {
+                $cartData = Cart::content();
+                $cartQty = Cart::count();
+                $cartTotal = Cart::total();
+                $divisions = ShipDivison::orderBy('division_name', 'ASC')->get();
+                return view('frontend.checkout.checkout_view', compact('cartData', 'cartQty', 'cartTotal', 'divisions'));
+            } else {
+                $notification = array(
+                    'message' => 'Your Cart Is Empty!',
+                    'alert-type' => 'error'
+                );
+                return  redirect()->to('/')->with($notification);
+            }
+        } else {
+            $notification = array(
+                'message' => 'You Need to Login First!',
+                'alert-type' => 'error'
+            );
+            return  redirect()->route('login')->with($notification);
+        }
     }
 }
