@@ -13,8 +13,10 @@ use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\User\AllUserController;
 use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\User\CartPageController;
+use App\Http\Controllers\User\CashController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\StripeController;
 use Illuminate\Support\Facades\Auth;
@@ -91,6 +93,9 @@ Route::middleware(['auth:admin'])->group(function () {
 
     Route::post('/update/change/password', [AdminProfileController::class, 'AdminUpdateChangePassword'])->name('update.change.password');
 });
+
+
+
 // Admin Brand All Routes
 
 Route::prefix('brand')->group(function () {
@@ -245,7 +250,17 @@ Route::group(
 
         // Stripe Payment
         Route::post('/stripe/order', [StripeController::class, 'StripeOrder'])->name('stripe.order');
+
+        // Cash Payment
+        Route::post('/cash/order', [CashController::class, 'CashOrder'])->name('cash.order');
+
+        // View Orders
+        Route::get('/my/orders', [AllUserController::class, 'MyOrders'])->name('my.orders');
+
+        // View Order Details
+        Route::get('/order_details/{order_id}', [AllUserController::class, 'OrderDetails']);
     }
+
 );
 
 //   Cart Page

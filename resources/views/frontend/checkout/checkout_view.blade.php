@@ -212,7 +212,7 @@
           <div class="col-md-4">
            <label for="">Cash</label>
            <input type="radio" name="payment_method" value="cash">
-           <img src="{{ asset('frontend/assets/images/payments/2.png') }}">
+           <img src="{{ asset('frontend/assets/images/payments/6.png') }}">
           </div><!-- col-md-4 -->
          </div><!-- row -->
          <br>
