@@ -16,6 +16,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\User\CartPageController;
 use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\StripeController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Routing\RouteGroup;
@@ -241,6 +242,9 @@ Route::group(
         Route::get('/get-wishlist-product', [WishlistController::class, 'GetWishlistProduct']);
         // Wishlist Remove Product AJAX
         Route::get('/wishlist-remove/{id}', [WishlistController::class, 'RemoveWishlistProduct']);
+
+        // Stripe Payment
+        Route::post('/stripe/order', [StripeController::class, 'StripeOrder'])->name('stripe.order');
     }
 );
 

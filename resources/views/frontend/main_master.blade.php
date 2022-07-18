@@ -22,6 +22,7 @@
  <link rel="stylesheet" href="{{ asset('frontend/assets/css/animate.min.css') }}">
  <link rel="stylesheet" href="{{ asset('frontend/assets/css/rateit.css') }}">
  <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap-select.min.css') }}">
+ <script src="https://js.stripe.com/v3/"></script>
 
  <!-- Icons/Glyphs -->
  <link rel="stylesheet" href="{{ asset('frontend/assets/css/font-awesome.css') }}">
@@ -403,7 +404,7 @@
             ${value.product.discount_price == null
             ? `${value.product.selling_price}`
                 : `${value.product.discount_price} <span>${value.product.selling_price}</span>
-                                                                                                                                                                                                                                               `
+                                                                                                                                                                                                                                                      `
             }
            </div>
           </td>
@@ -489,8 +490,8 @@
                 ? `<span class="text-danger">N/A</span>`
                 :
           ` <strong>
-                                                                                                              ${value.options.size}
-                                                                                                          </strong>`
+                                                                                                                     ${value.options.size}
+                                                                                                                 </strong>`
                }
           </td>
 
@@ -612,7 +613,9 @@
     url: "{{ url('/coupon-apply') }}",
     success: function(data) {
      couponCal();
-     $('#couponField').hide();
+     if (data.validity == true) {
+      $('#couponField').hide();
+     }
      // Start Message
      const Toast = Swal.mixin({
       toast: true,
