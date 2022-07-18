@@ -6,6 +6,7 @@ use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminProfileController extends Controller
@@ -64,5 +65,12 @@ class AdminProfileController extends Controller
         } else {
             return redirect()->back();
         }
+    }
+
+
+    public function AllUsers()
+    {
+        $users = User::latest()->get();
+        return view('backend.user.all_user', compact('users'));
     }
 }
