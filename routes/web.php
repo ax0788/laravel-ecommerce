@@ -259,6 +259,8 @@ Route::group(
 
         // View Order Details
         Route::get('/order_details/{order_id}', [AllUserController::class, 'OrderDetails']);
+        // Download Invoice
+        Route::get('/invoice_download/{order_id}', [AllUserController::class, 'InvoiceDownload']);
     }
 
 );
